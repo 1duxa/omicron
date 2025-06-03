@@ -1,0 +1,58 @@
+.main {
+  h1 { val {"Welcome to this cool app"} }
+  {header}
+  {section}
+  {footer}
+  {context-aware}
+  {alias}
+  {groups}
+}
+
+.main > header id = "header" style = "header" on-hover = "something" {
+
+}
+
+.main > section id = "main-section" style = "section" on-click = "handle_section_click" {
+  h1 style = "some-style" { 
+    val { "Header after welcome to this cool app" } 
+  } 
+  h2 ctx-on-click = |some-click-ctx| "log-click" : "do-sound" on-hover = "do-something" { 
+    val { "Header after header after header" } 
+  }
+}
+
+.main > footer id = "footer" style = "footer" on-click = "fold-footer" {
+  p { 
+    val { "Sonething cool" } 
+  }
+}
+
+.main > context-aware id = "some-id" ctx-style = |some-context| "some-style" : "some-other-style" : "third-style" {
+  val { "Plain text something" }
+}
+
+.main > alias as internal {
+  {second-internal}
+}
+
+.internal > second-internal {
+  ctx-h3 |h3-ctx-variable| { 
+    val { "Very low" } 
+    img { 
+      val { "./img.jpeg" } 
+    }
+    ctx-img |img-ctx| 
+      { img-variable } : 
+      { "./some-img-path" } : 
+      { fall-back-img-variable }
+  } : {
+    val {"Very high"}
+  }
+}
+
+.main > groups {
+  (some_array_item,other_array_item) in val { some_array }
+    h1 { val {some_array_item} }
+    h1 { val {someother_array_item} }
+  }
+}

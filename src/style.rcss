@@ -1,0 +1,11 @@
+app {
+  background: #FFFFF;
+  text-color: black;
+  border: 2px solid gray;
+  align-child: grid;
+  grid-cols: 1fr 1fr;
+}
+
+
+
+

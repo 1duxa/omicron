@@ -1,0 +1,36 @@
+<Entry>
+  <title>Hi</title>
+
+  <style src="./style.rcss" />
+
+  <app style="app">
+
+    <button on-click = "fill-template">Click me to fill hello-template</button>
+    <use-template id="hello-template">
+      <param name="0">Andrew</param>
+    </use-template>
+  
+
+    <if cond="loggedIn">
+      <div>Welcome</div>
+    </if>
+
+
+    <foreach from="users" as="user">
+      <div>{user.name}</div>
+    </foreach>
+  </app>
+
+  <templates>
+    <template id="hello-template">
+      <div>Hi from {0}</div>
+      <h1>Goodbye, {0}!</h1>
+    </template>
+  </templates>
+
+  <storages>
+    <bool default = "false" id = "loggedIn"/>
+    <vec type = "int" id = ""> <param>2</param></vec>
+  </storages>
+</Entry>
+
