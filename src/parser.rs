@@ -1,81 +1,56 @@
-use std::collections::HashMap;
+use crate::lexer::Token;
+use anyhow::{Result, anyhow};
+pub struct DuxaParser(pub Vec<Token>);
 
-#[derive(Debug, Clone)]
-pub enum Expr {
-    Static(String),
-    Dynamic(String),
-    Contextual {
-        ctx_var: String,
-        branches: Vec<String>,
-    },
+struct Context {
+    context_value: i8,
+    values: [String],
 }
-
-#[derive(Debug, Clone)]
-pub struct Val {
-    pub expr: Expr,
+enum Component {
+    Tag(H1),
+    Placeholder(String),
+    Fill,
+    ChildLabels,
 }
-
-#[derive(Debug, Clone)]
-pub enum AttrValue {
-    Static(String),
-    Contextual {
-        ctx_var: String,
-        values: Vec<String>,
-    },
+struct H1 {
+    val: String,
+    ctx: Box<Context>,
 }
-
-#[derive(Debug, Clone)]
-pub struct Element {
-    pub tag: String, // h1, h2, p, img, etc.
-    pub val: Option<Val>,
-    pub attrs: HashMap<String, AttrValue>,
-    pub children: Vec<Nodes>,
+struct Label {
+    alias: String,
+    componets: Vec<Component>,
 }
-
-#[derive(Debug, Clone)]
-pub struct ForEach {
-    pub vars: Vec<String>,
-    pub iterable: Expr,
-    pub body: Vec<Nodes>,
-}
-
-#[derive(Debug, Clone)]
-pub struct Placeholder {
-    pub name: String,
-    pub alias: Option<String>,
-}
-
-#[derive(Debug, Clone)]
-pub struct MainLabel {
-    pub name: String,
-    pub nodes: Vec<Nodes>,
-}
-
-#[derive(Debug, Clone)]
-pub struct AliasBlock {
-    pub alias: String,
-    pub body: Vec<Nodes>,
-}
-
-#[derive(Debug, Clone)]
-pub enum Nodes {
-    Element(Element),
-    Val(Val),
-    Placeholder(Placeholder),
-    ForEach(ForEach),
-    AliasBlock(AliasBlock),
-}
-
-pub struct DuxaParser(pub String);
 
 impl DuxaParser {
-    pub fn parse(&mut self) -> Result<MainLabel, Box<dyn std::error::Error>> {
-        todo!("...");
-    }
+    pub fn parse(&mut self) -> Result<Label> {
+        if self.0.len() == 0 {
+            return Err(anyhow!("It's empty bro")); 
+        }
+        let mut tokens = self.0.iter();
+        while let Some(token) = tokens.next() {
+            match token {
+                Token::Dot => {
+                    if let Some(next_token) = tokens.next() {
+                        match next_token {
+                            Token::Ident(ident) => {}
+                            _ => {
+                                return Err(anyhow!("Can you dig it, sucka"));
+                            }
+                        }
+                    }
+                },
+                Token::Ident(ident) => {
+                    todo!()
+                },
+                _ => return Err(anyhow!("Not implemented"))
 
-    pub fn parse_label_declaration() -> () {
-        todo!("Parse a label like `.main > footer` or `.internal > second-internal`")
+            }
+        }
     }
+    todo!();
+}
+
+    pub fn parse_label(&mut self) -> () {}
     // TODO:
     // fn parse_attrs(...)
     // fn parse_val(...)
